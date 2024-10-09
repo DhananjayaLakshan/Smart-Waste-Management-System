@@ -6,14 +6,8 @@ const userSchema = new mongoose.Schema({
     Email: { type: String, required: true },
     Password: { type: String, required: true },
     img: { type: String, required: false },
-    // location: {
-    //     type: { type: String, enum: ['Point'], required: true },
-    //     coordinates: { type: [Number], required: true }
-    // },
     isAdmin: { type: Boolean, required: false }
 });
-
-// userSchema.index({ location: '2dsphere' }); // Still commented out as location is not used
 
 const User = mongoose.model('User', userSchema);
 
