@@ -6,7 +6,7 @@ const userSchema = new mongoose.Schema({
     Email: { type: String, required: true },
     Password: { type: String, required: true },
     img: { type: String, required: false },
-    isAdmin: { type: Boolean, required: false }
+    isAdmin: { type: Boolean, default: false },
 });
 
 const User = mongoose.model('User', userSchema);

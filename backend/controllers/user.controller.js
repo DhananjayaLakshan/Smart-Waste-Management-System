@@ -1,6 +1,5 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const router = express.Router();
 const jwt = require('jsonwebtoken');
 const UserModel = require('../models/userSchema');
 const JWT_SECRET = process.env.JWT_SECRET || 'your_jwt_secret_key';
