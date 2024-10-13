@@ -17,13 +17,18 @@ export default function SignUp() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!formData.firstName || !formData.address || !formData.email || !formData.password) {
+    if (
+      !formData.firstName ||
+      !formData.address ||
+      !formData.email ||
+      !formData.password
+    ) {
       return setErrorMessage("Please fill out all fields.");
     }
     try {
       setLoading(true);
       setErrorMessage(null);
-      const res = await fetch("http://localhost:5001/api/user/register", {
+      const res = await fetch("/api/user/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
@@ -35,12 +40,12 @@ export default function SignUp() {
       setLoading(false);
 
       Swal.fire({
-        title: 'Account Created!',
-        text: 'Your account has been successfully created.',
-        icon: 'success',
-        confirmButtonText: 'OK'
+        title: "Account Created!",
+        text: "Your account has been successfully created.",
+        confirmButtonText: "OK",
+        confirmButtonColor: "#006400",
       }).then(() => {
-        navigate("/sign-in"); 
+        navigate("/sign-in");
       });
     } catch (error) {
       setErrorMessage("Server error. Please try again.");
@@ -57,7 +62,9 @@ export default function SignUp() {
     >
       <div className="flex flex-col items-center p-8 max-w-lg w-full glassmorphism rounded-lg shadow-lg mx-8">
         <img src={logo} alt="Logo" className="h-16 mb-5" />
-        <div className="text-4xl mb-3 text-center font-serif">CREATE ACCOUNT</div>
+        <div className="text-4xl mb-3 text-center font-serif">
+          CREATE ACCOUNT
+        </div>
         <hr className="shadow-lg mb-2 w-full bg-white" />
         <form className="flex flex-col gap-4 w-full" onSubmit={handleSubmit}>
           <div>
@@ -106,7 +113,12 @@ export default function SignUp() {
               onChange={handleChange}
             />
           </div>
-          <Button gradientDuoTone="greenToBlue" type="submit" disabled={loading} className="w-full">
+          <Button
+            gradientDuoTone="greenToBlue"
+            type="submit"
+            disabled={loading}
+            className="w-full"
+          >
             {loading ? (
               <>
                 <Spinner size="sm" />
