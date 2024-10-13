@@ -67,6 +67,18 @@ const createQR = async (req, res) => {
 const getQR = async (req, res) => {
     try {
 
+        if (!req.user.isAdmin) {
+            return res.status(401).json({ status: 'failed', message: 'You are not authorized to perform this action' });
+        }
+
+        const getQR = await QRmodel.find();
+
+        if (!getQR) {
+            return res.status(404).json({ status: 'failed', message: 'QR code not found' });
+        }
+
+        return res.status(200).json({ status: 'success', message: 'QR code retrieved successfully', data: getQR });
+
     } catch (error) {
 
     }
