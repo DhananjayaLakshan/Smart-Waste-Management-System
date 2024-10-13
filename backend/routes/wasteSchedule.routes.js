@@ -1,13 +1,13 @@
 const express = require('express');
 const router = express.Router();
 const {createSchedule, getAllSchedules, getScheduleById, updateSchedule, deleteSchedule} = require('../controllers/wasteSchedule.controller');
-const { model } = require('mongoose');
+const verifyUser = require('../util/verifyUser')
 
-router.post('/', createSchedule)
-router.get('/', getAllSchedules)
-router.get('/:id', getScheduleById)
-router.put('/:id', updateSchedule)
-router.delete('/:id', deleteSchedule)
+router.post('/',verifyUser, createSchedule)
+router.get('/',verifyUser, getAllSchedules)
+router.get('/:id',verifyUser, getScheduleById)
+router.put('/:id',verifyUser, updateSchedule)
+router.delete('/:id',verifyUser, deleteSchedule)
 
 
 module.exports = router;
