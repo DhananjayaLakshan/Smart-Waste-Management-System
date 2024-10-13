@@ -2,6 +2,7 @@ const WasteModel = require('../models/wasteShedule.model')
 const UserModel = require('../models/userSchema')
 
 
+
 const createSchedule = async (req, res) => {
     try {
         const userId = req.user.userId;
@@ -15,7 +16,13 @@ const createSchedule = async (req, res) => {
 
         const address = getUser.Address;
 
-        // Create new schedule with 'new' keyword
+        // Check if the selected date and time are already booked
+        const existingSchedule = await WasteModel.findOne({ selectedDate, selectedTime });
+        if (existingSchedule) {
+            return res.status(409).json({ status: 'failed', message: 'Selected date and time are already booked. Please choose another time.' });
+        }
+
+        // Create new schedule
         const data = new WasteModel({
             userId,
             wasteType,
