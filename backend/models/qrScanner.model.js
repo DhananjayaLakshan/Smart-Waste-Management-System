@@ -7,6 +7,12 @@ const qrScannerSchema = new Schema({
     weight: {type: Number},
     level: {type: Number},
     owner: {type: String},
+    collector: {type: String},
+    status: {
+        type: String,
+        enum: ['pending', 'inProgress', 'completed'],
+    },
+    
 }, {timestamps: true});
 
 module.exports = model('qrScanner', qrScannerSchema);

@@ -6,8 +6,8 @@ const verifyUser = require('../util/verifyUser')
 
 router.post('/', verifyUser, createQR)
 router.get('/', verifyUser, getQR)
-router.put('/', verifyUser, updateQR)
-router.delete('/', verifyUser, deleteQR)
+router.put('/:id', verifyUser, updateQR)
+router.delete('/:id', verifyUser, deleteQR)
 
 
 module.exports = router;
