@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Alert, Button, Label, Spinner, TextInput } from "flowbite-react";
-import Swal from "sweetalert2";
 import logo from "../assets/logo.png";
 import background from "../assets/background.png";
+import Swal from "sweetalert2";
 
-export default function Signin() {
+export default function SignIn() {
   const [formData, setFormData] = useState({});
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
@@ -18,7 +18,7 @@ export default function Signin() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!formData.email || !formData.password) {
-      return setErrorMessage("Please fill out both fields.");
+      return setErrorMessage("Please fill out all fields.");
     }
 
     try {
@@ -31,23 +31,27 @@ export default function Signin() {
       });
 
       const data = await res.json();
-      if (!res.ok || data.success === false) {
+
+      if (!res.ok || !data.success) {
+        setErrorMessage(data.message || "Login failed. Please try again.");
         setLoading(false);
-        return setErrorMessage(data.message);
+        return;
       }
 
+      // Save the token and user data in local storage
       localStorage.setItem("token", data.token);
-      localStorage.setItem("user", JSON.stringify(data.user));
+      localStorage.setItem("user", JSON.stringify(data.data));
 
-      Swal.fire({
-        title: "Login Successful",
-        text: "You have been logged in!",
-        icon: "success",
-        confirmButtonText: "OK",
-      });
-
+      // Redirect to another page after successful login
       setLoading(false);
-      navigate("/dashboard");
+      Swal.fire({
+        title: "Login Successful!",
+        text: "You have successfully logged in.",
+        confirmButtonText: "OK",
+        confirmButtonColor: "#006400",
+      }).then(() => {
+        navigate("/");
+      });
     } catch (error) {
       setErrorMessage("Server error. Please try again.");
       setLoading(false);
@@ -105,7 +109,7 @@ export default function Signin() {
           </Button>
         </form>
         <div className="flex gap-2 text-sm mt-5 font-serif text-white">
-          <span>Do not Have An Account?</span>
+          <span>Do not have an account?</span>
           <Link to="/sign-up" className="text-blue-300">
             Sign Up
           </Link>
