@@ -88,6 +88,14 @@ export default function Header() {
         >
           <Link to="/about">ABOUT</Link>
         </Navbar.Link>
+        <Navbar.Link
+          active={path === "/schedule/collection"}
+          as={"div"}
+          style={{ color: path === "/schedule/collection" ? "#807e87" : "#000" }}
+          className="text-lg"
+        >
+          <Link to="/schedule/collection">SCHEDULE</Link>
+        </Navbar.Link>
       </Navbar.Collapse>
     </Navbar>
   );
