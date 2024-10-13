@@ -55,8 +55,17 @@ const login = async (req, res) => {
             { expiresIn: '1d' }
         );
 
+        const userData = {
+            _id: user._id,
+            Name: user.Name,
+            Address: user.Address,
+            Email: user.Email,
+            isAdmin: user.isAdmin,
+            img: user.img
+        }
+
         // Send the token in the response
-        res.status(200).json({ message: 'Login successful', token, success: true });
+        res.status(200).json({ message: 'Login successful', token, success: true, data:userData });
     } catch (err) {
         console.log(err);
         res.status(500).json({ message: 'Server error', success: false });
