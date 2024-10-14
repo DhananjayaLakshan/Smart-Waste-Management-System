@@ -1,21 +1,16 @@
-import React from "react";
 import QRCodeReader from "../components/QRCodeReader";
-import GenerateQRCode from "../components/GenerateQRCode";
+import background from "../assets/background.png";
 
 const QRPage = () => {
-  // Define the data you want to encode in the QR code
-  const data = {
-    id: 1,
-    name: "Sample Data",
-    info: "This is a test QR code",
-  };
 
   return (
-    <div>
-      {/* QR Code Reader */}
+    <div
+      className="flex lg:flex-col flex-col justify-between gap-8 p-8 min-h-screen bg-cover bg-center"
+      style={{
+        backgroundImage: `url(${background})`,
+      }}
+    >
       <QRCodeReader />
-      QR Code Generator
-      <GenerateQRCode data={data} />
     </div>
   );
 };

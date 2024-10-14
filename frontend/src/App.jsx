@@ -1,4 +1,3 @@
-import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Header from "./components/Header";
 import Home from "./pages/Home";
@@ -8,6 +7,7 @@ import Signin from "./pages/SignIn";
 import About from "./pages/About";
 import ScheduleCollection from "./pages/ScheduleCollection";
 import QRPage from "./pages/QRPage";
+import QRCodeGenerator from "./pages/QRCodeGenerator";
 
 export default function App() {
   return (
@@ -20,6 +20,7 @@ export default function App() {
         <Route path="/sign-in" element={<Signin />} />
         <Route path="/schedule/collection" element={<ScheduleCollection />} />
         <Route path="/qr/scan" element={<QRPage />} />
+        <Route path="/qr/generate" element={<QRCodeGenerator />} />
       </Routes>
       <Footers />
     </BrowserRouter>
