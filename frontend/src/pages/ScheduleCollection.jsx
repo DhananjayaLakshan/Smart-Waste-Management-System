@@ -117,7 +117,7 @@ export default function ScheduleCollection() {
     }
   };
 
-  // Handle Update
+  // Handle Update Function
   const handleUpdate = async (updatedSchedule) => {
     const token = localStorage.getItem("token");
     try {
@@ -129,6 +129,7 @@ export default function ScheduleCollection() {
         },
         body: JSON.stringify(updatedSchedule),
       });
+
       const data = await res.json();
       if (data.status === "success") {
         const updatedHistory = pickupHistory.map((item) =>
@@ -136,13 +137,19 @@ export default function ScheduleCollection() {
         );
         setPickupHistory(updatedHistory);
         setIsModalOpen(false);
+        Swal.fire({
+          title: "Updated!",
+          text: "Your schedule has been updated.",
+          confirmButtonText: "OK",
+          confirmButtonColor: "#006400",
+        });
       }
     } catch (error) {
       console.error("Error updating schedule:", error);
     }
   };
 
-  // Handle delete Function
+  // Handle Delete Function
   const handleDelete = async (scheduleId) => {
     const token = localStorage.getItem("token");
     Swal.fire({
