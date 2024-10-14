@@ -9,8 +9,7 @@ const qrScannerSchema = new Schema({
     owner: {type: String},
     collector: {type: String},
     status: {
-        type: String,
-        enum: ['pending', 'inProgress', 'completed'],
+        type: String
     },
     
 }, {timestamps: true});
