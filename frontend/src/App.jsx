@@ -7,6 +7,7 @@ import Signin from "./pages/SignIn";
 import About from "./pages/About";
 import ScheduleCollection from "./pages/ScheduleCollection";
 import QRPage from "./pages/QRPage";
+import Report from "./pages/Report";
 import QRCodeGenerator from "./pages/QRCodeGenerator";
 
 export default function App() {
@@ -20,6 +21,7 @@ export default function App() {
         <Route path="/sign-in" element={<Signin />} />
         <Route path="/schedule/collection" element={<ScheduleCollection />} />
         <Route path="/qr/scan" element={<QRPage />} />
+        <Route path="/report" element={<Report  />} />
         <Route path="/qr/generate" element={<QRCodeGenerator />} />
       </Routes>
       <Footers />

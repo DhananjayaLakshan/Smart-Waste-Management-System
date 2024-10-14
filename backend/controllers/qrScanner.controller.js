@@ -191,6 +191,17 @@ const deleteQR = async (req, res) => {
     }
 }
 
+
+const getAllWaste = async (req, res) => {
+    try {
+        const getQR = await QRmodel.find();
+        res.json(getQR);
+
+    } catch (error) {
+        console.log("Error in getAll waste", error)
+    }
+}
+
 const getMessage = async (req, res) => {
     try {
         // Logic for retrieving the message will go here
@@ -220,6 +231,8 @@ module.exports = {
     updateQR,
     deleteQR,
     getQRByType,
+    getAllWaste,
+
     getQrByCollecctor,
     getMessage
 }
