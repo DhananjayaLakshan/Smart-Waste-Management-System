@@ -75,23 +75,15 @@ export default function Header() {
         <Navbar.Link
           active={path === "/"}
           as={"div"}
-          style={{ color: path === "/" ? "#807e87" : "#000" }}
+          style={{ color: path === "/" ? "#fff" : "#000" }}
           className="text-lg"
         >
           <Link to="/">HOME</Link>
         </Navbar.Link>
         <Navbar.Link
-          active={path === "/about"}
-          as={"div"}
-          style={{ color: path === "/about" ? "#807e87" : "#000" }}
-          className="text-lg"
-        >
-          <Link to="/about">ABOUT</Link>
-        </Navbar.Link>
-        <Navbar.Link
           active={path === "/schedule/collection"}
           as={"div"}
-          style={{ color: path === "/schedule/collection" ? "#807e87" : "#000" }}
+          style={{ color: path === "/schedule/collection" ? "#fff" : "#000" }}
           className="text-lg"
         >
           <Link to="/schedule/collection">SCHEDULE</Link>
@@ -99,10 +91,18 @@ export default function Header() {
         <Navbar.Link
           active={path === "/qr/scan"}
           as={"div"}
-          style={{ color: path === "/qr/scan" ? "#807e87" : "#000" }}
+          style={{ color: path === "/qr/scan" ? "#fff" : "#000" }}
           className="text-lg"
         >
           <Link to="/qr/scan">SCAN QR</Link>
+        </Navbar.Link>
+        <Navbar.Link
+          active={path === "/about"}
+          as={"div"}
+          style={{ color: path === "/about" ? "#fff" : "#000" }}
+          className="text-lg"
+        >
+          <Link to="/about">ABOUT</Link>
         </Navbar.Link>
       </Navbar.Collapse>
     </Navbar>
