@@ -1,17 +1,23 @@
 import { useEffect, useRef, useState } from "react";
 import { Html5QrcodeScanner } from "html5-qrcode";
-import Swal from "sweetalert2"; // Import SweetAlert
+import { Button } from "flowbite-react";
+import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 const QRCodeReader = () => {
+  const navigate = useNavigate();
   const qrRef = useRef(null);
   const [qrData, setQrData] = useState([]);
   const [scannerInitialized, setScannerInitialized] = useState(false);
+
+  const handleNavigate = () => {
+    navigate("/qr/generate");
+  };
 
   // Handle QR Code detection
   const onScanSuccess = (decodedText) => {
     console.log(`QR Code detected: ${decodedText}`);
 
-    // Parse the QR code response data (decodedText is assumed to be JSON)
     const parsedData = JSON.parse(decodedText);
 
     // Show SweetAlert with form to display QR data and allow submission
@@ -37,6 +43,7 @@ const QRCodeReader = () => {
       `,
       showCancelButton: true,
       confirmButtonText: "Collected",
+      confirmButtonColor: "#006400",
       cancelButtonText: "Cancel",
       preConfirm: () => {
         return {
@@ -60,7 +67,7 @@ const QRCodeReader = () => {
 
   const sendDataToBackend = async (data) => {
     try {
-      const token = localStorage.getItem("token"); // Assume token is stored
+      const token = localStorage.getItem("token");
       const requestData = {
         location: data.location,
         wasteType: data.wasteType,
@@ -73,7 +80,7 @@ const QRCodeReader = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`, // Include Bearer token
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(requestData),
       });
@@ -81,35 +88,36 @@ const QRCodeReader = () => {
       const response = await res.json();
 
       if (response.status === "success") {
-        // Show success alert with response data
         Swal.fire({
-          title: "Success",
+          title: "Success!",
           text: response.message,
-          icon: "success",
+          confirmButtonText: "OK",
+          confirmButtonColor: "#006400",
         });
       } else {
         Swal.fire({
-          title: "Error",
+          title: "Error!",
           text: "Failed to send data to backend",
-          icon: "error",
+          confirmButtonText: "OK",
+          confirmButtonColor: "#006400",
         });
       }
     } catch (error) {
-      console.error("Error sending data to backend:", error);
       Swal.fire({
-        title: "Error",
-        text: "An error occurred while sending data to backend",
-        icon: "error",
+        title: "Error!",
+        text: "Failed to send data to backend",
+        confirmButtonText: "OK",
+        confirmButtonColor: "#006400",
       });
     }
   };
 
   const fetchQrData = async () => {
     try {
-      const token = localStorage.getItem("token"); // Assume the token is stored in localStorage
+      const token = localStorage.getItem("token"); 
       const response = await fetch("http://localhost:5001/api/qr", {
         headers: {
-          Authorization: `Bearer ${token}`, // Include the token in the request headers
+          Authorization: `Bearer ${token}`, 
         },
       });
 
@@ -140,7 +148,7 @@ const QRCodeReader = () => {
   return (
     <div className="flex flex-col md:flex-row min-h-screen  p-5">
       {/* Left Side - QR Code Scanner */}
-      <div className="bg-white bg-opacity-40 backdrop-blur-md rounded-lg shadow-lg p-6 w-full md:w-1/2 mb-5 md:mb-0 md:mr-5 h-96">
+      <div className="bg-white bg-opacity-40 backdrop-blur-md rounded-lg shadow-lg p-6 w-full md:w-1/2 mb-5 md:mb-0 md:mr-5 ">
         <h3 className="text-2xl font-bold text-center mb-4 text-gray-800">
           Scan QR Code
         </h3>
@@ -148,7 +156,7 @@ const QRCodeReader = () => {
         <div
           id="qr-reader"
           ref={qrRef}
-          className="border-2 border-dashed border-gray-300 rounded-lg flex flex-col items-center justify-center "
+          className="border-2 border-dashed border-gray-300 rounded-lg flex flex-col items-center align-middle justify-center bg-white"
           style={{ width: "100%", height: "250px" }}
         >
           {/* Show fallback image when scanner is not active */}
@@ -156,7 +164,7 @@ const QRCodeReader = () => {
             <img
               src="your-image-url-here"
               alt="QR Scanner Fallback"
-              className="w-32 h-32 object-contain"
+              className="w-10 h-10 object-contain"
             />
           )}
         </div>
@@ -164,9 +172,17 @@ const QRCodeReader = () => {
         <p className="text-center text-gray-600 mt-4">
           Point your camera at a QR code to scan.
         </p>
-      </div> 
+        <Button
+          type="submit"
+          className="w-full mt-6"
+          gradientDuoTone="greenToBlue"
+          onClick={handleNavigate}
+        >
+          Generate QR Code
+        </Button>
+      </div>
       {/* Right Side - QR Code Data */}
-      <div className="bg-white rounded-lg shadow-lg p-6 w-full md:w-1/2 overflow-auto h-auto md:max-h-screen">
+      <div className="bg-white bg-opacity-40 rounded-lg shadow-lg p-6 w-full md:w-1/2 overflow-auto h-auto md:max-h-screen">
         <h3 className="text-2xl font-bold text-center mb-4 text-gray-800">
           QR Code Details
         </h3>
@@ -174,7 +190,7 @@ const QRCodeReader = () => {
           qrData.map((item) => (
             <div
               key={item._id}
-              className="bg-gray-100 p-4 mb-4 rounded-lg shadow-md"
+              className="bg-white hover:bg-green-100 p-4 mb-4 rounded-lg shadow-md"
             >
               <p>
                 <strong>Location:</strong> {item.location}
