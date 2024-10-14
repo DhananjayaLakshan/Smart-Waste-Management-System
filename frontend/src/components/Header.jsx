@@ -96,6 +96,14 @@ export default function Header() {
         >
           <Link to="/schedule/collection">SCHEDULE</Link>
         </Navbar.Link>
+        <Navbar.Link
+          active={path === "/qr/scan"}
+          as={"div"}
+          style={{ color: path === "/qr/scan" ? "#807e87" : "#000" }}
+          className="text-lg"
+        >
+          <Link to="/qr/scan">SCAN QR</Link>
+        </Navbar.Link>
       </Navbar.Collapse>
     </Navbar>
   );

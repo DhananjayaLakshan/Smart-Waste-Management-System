@@ -7,6 +7,7 @@ import SignUp from "./pages/SignUp";
 import Signin from "./pages/SignIn";
 import About from "./pages/About";
 import ScheduleCollection from "./pages/ScheduleCollection";
+import QRPage from "./pages/QRPage";
 
 export default function App() {
   return (
@@ -18,6 +19,7 @@ export default function App() {
         <Route path="/sign-up" element={<SignUp />} />
         <Route path="/sign-in" element={<Signin />} />
         <Route path="/schedule/collection" element={<ScheduleCollection />} />
+        <Route path="/qr/scan" element={<QRPage />} />
       </Routes>
       <Footers />
     </BrowserRouter>
