@@ -191,6 +191,28 @@ const deleteQR = async (req, res) => {
     }
 }
 
+const getMessage = async (req, res) => {
+    try {
+        // Logic for retrieving the message will go here
+
+        const { id } = req.params;
+
+        // Fetch the QR code by its ID
+        const getMessage = await Message.find({userId: id});
+
+        if (!getQR) {
+            return res.status(404).json({ status: 'failed', message: 'QR code not found' });
+        }
+
+        // Return the found QR code
+        return res.status(200).json({ status: 'success', message: 'QR code retrieved successfully', data: getMessage });
+
+
+    } catch (error) {
+        // Catch any errors and return an appropriate response
+    }
+}
+
 // Export all controller functions as a module
 module.exports = {
     createQR,
@@ -198,5 +220,6 @@ module.exports = {
     updateQR,
     deleteQR,
     getQRByType,
-    getQrByCollecctor
+    getQrByCollecctor,
+    getMessage
 }
