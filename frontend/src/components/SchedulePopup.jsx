@@ -44,7 +44,7 @@ export default function SchedulePopup({ schedule, isOpen, onClose, onUpdate }) {
 
   return (
     <Modal show={isOpen} onClose={onClose}>
-      <Modal.Header>Schedule Details</Modal.Header>
+      <Modal.Header>Update Schedule Details</Modal.Header>
       <Modal.Body>
         <div className="space-y-4">
           {/* Waste Type Category Selection */}
