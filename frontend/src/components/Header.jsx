@@ -96,6 +96,16 @@ export default function Header() {
         >
           <Link to="/qr/scan">SCAN QR</Link>
         </Navbar.Link>
+        
+        <Navbar.Link
+          active={path === "/report"}
+          as={"div"}
+          style={{ color: path === "/report" ? "#fff" : "#000" }}
+          className="text-lg"
+        >
+          <Link to="/report">REPORT</Link>
+        </Navbar.Link>
+
         <Navbar.Link
           active={path === "/about"}
           as={"div"}
