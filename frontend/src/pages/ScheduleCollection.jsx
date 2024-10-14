@@ -1,15 +1,15 @@
 import { useState, useEffect } from "react";
 import { Checkbox, Button, Card, Label, TextInput } from "flowbite-react";
 import { HiPencilAlt, HiTrash } from "react-icons/hi";
-import ewaste from "../assets/categories/ewaste.jpg";
+import Swal from "sweetalert2";
+import background from "../assets/background.png";
 import glass from "../assets/categories/glass.jpg";
 import metal from "../assets/categories/metal.jpg";
-import organik from "../assets/categories/organik.jpg";
 import paper from "../assets/categories/paper.jpg";
+import ewaste from "../assets/categories/ewaste.jpg";
+import organik from "../assets/categories/organik.jpg";
 import plastic from "../assets/categories/plastic.jpg";
 import SchedulePopup from "../components/SchedulePopup";
-import background from "../assets/background.png";
-import Swal from "sweetalert2";
 
 const wasteCategories = [
   { name: "E-Waste", img: ewaste },
@@ -59,10 +59,10 @@ export default function ScheduleCollection() {
     });
   };
 
+  //Handle Create Schedule Function
   const handleSubmit = async (e) => {
     e.preventDefault();
     const token = localStorage.getItem("token");
-
     try {
       const res = await fetch("/api/waste", {
         method: "POST",
@@ -75,10 +75,7 @@ export default function ScheduleCollection() {
       const data = await res.json();
 
       if (data.status === "success") {
-        // Update history after successful scheduling
         setPickupHistory((prevHistory) => [...prevHistory, data.data]);
-
-        // Show success alert using SweetAlert
         Swal.fire({
           title: "Success!",
           text: "Your waste collection has been successfully scheduled.",
@@ -94,8 +91,6 @@ export default function ScheduleCollection() {
         });
       }
     } catch (error) {
-      console.error("Error submitting schedule:", error);
-
       Swal.fire({
         title: "Error!",
         text: "There was an issue submitting your schedule.",
@@ -122,7 +117,7 @@ export default function ScheduleCollection() {
     }
   };
 
-  // Handle update
+  // Handle Update
   const handleUpdate = async (updatedSchedule) => {
     const token = localStorage.getItem("token");
     try {
@@ -136,7 +131,6 @@ export default function ScheduleCollection() {
       });
       const data = await res.json();
       if (data.status === "success") {
-        // Update local history
         const updatedHistory = pickupHistory.map((item) =>
           item._id === updatedSchedule._id ? data.data : item
         );
@@ -148,18 +142,46 @@ export default function ScheduleCollection() {
     }
   };
 
-  // Handle delete
+  // Handle delete Function
   const handleDelete = async (scheduleId) => {
     const token = localStorage.getItem("token");
-    try {
-      await fetch(`/api/waste/${scheduleId}`, {
-        method: "DELETE",
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      setPickupHistory(pickupHistory.filter((item) => item._id !== scheduleId));
-    } catch (error) {
-      console.error("Error deleting schedule:", error);
-    }
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      showCancelButton: true,
+      confirmButtonColor: "#FF0000",
+      cancelButtonColor: "#006400",
+      confirmButtonText: "Delete",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          const res = await fetch(`/api/waste/${scheduleId}`, {
+            method: "DELETE",
+            headers: { Authorization: `Bearer ${token}` },
+          });
+          const data = await res.json();
+
+          if (data.status === "success") {
+            setPickupHistory(
+              pickupHistory.filter((item) => item._id !== scheduleId)
+            );
+            Swal.fire({
+              title: "Deleted!",
+              text: "Your schedule has been deleted.",
+              confirmButtonText: "OK",
+              confirmButtonColor: "#006400",
+            });
+          }
+        } catch (error) {
+          Swal.fire({
+            title: "Error!",
+            text: "There was an issue deleting your schedule. Please try again.",
+            confirmButtonText: "OK",
+            confirmButtonColor: "#006400",
+          });
+        }
+      }
+    });
   };
 
   return (
@@ -236,13 +258,25 @@ export default function ScheduleCollection() {
       </div>
 
       {/* Right Side - Pickup History */}
-      <div className="w-1/2">
+      <div className="w-full lg:w-1/2 flex flex-col items-center glassmorphism rounded-lg shadow-lg bg-white/30 backdrop-filter backdrop-blur-lg border border-white/20 p-7">
         <h2 className="text-2xl font-bold mb-5">Pickup History</h2>
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-4 w-full">
           {pickupHistory.length ? (
             pickupHistory.map((schedule) => (
-              <Card key={schedule._id} className="flex justify-between">
+              <Card
+                key={schedule._id}
+                className="flex justify-between hover:bg-green-100"
+              >
                 <div onClick={() => handleCardClick(schedule._id)}>
+                  <p>
+                    <h2 className="text-2xl font-bold mb-5">
+                      Job Status:<span style={{ color: "red" }}> Pending</span>
+                    </h2>
+                  </p>
+                  <p>
+                    <strong>Waste Types:</strong>{" "}
+                    {schedule.wasteType.join(", ")}
+                  </p>
                   <p>
                     <strong>Date:</strong>{" "}
                     {new Date(schedule.selectedDate).toLocaleDateString()}
@@ -250,21 +284,16 @@ export default function ScheduleCollection() {
                   <p>
                     <strong>Time:</strong> {schedule.selectedTime}
                   </p>
-                  <p>
-                    <strong>Waste Types:</strong>{" "}
-                    {schedule.wasteType.join(", ")}
-                  </p>
-                  <p>
-                    <strong>Address:</strong> {schedule.address}
-                  </p>
                 </div>
-                <div className="flex items-center gap-2">
+                <div className="flex justify-end gap-2  w-full">
                   <HiPencilAlt
                     className="text-blue-500 cursor-pointer"
+                    size={24}
                     onClick={() => handleCardClick(schedule._id)}
                   />
                   <HiTrash
                     className="text-red-500 cursor-pointer"
+                    size={24}
                     onClick={() => handleDelete(schedule._id)}
                   />
                 </div>
