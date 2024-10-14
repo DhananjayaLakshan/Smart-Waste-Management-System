@@ -61,8 +61,7 @@ const createQR = async (req, res) => {
     } catch (error) {
         return res.status(500).json({ status: 'failed', message: 'Internal server error', error: error.message });
     }
-};
-
+}
 
 const getQR = async (req, res) => {
     try {
@@ -108,9 +107,39 @@ const getQRByType = async (req, res) => {
         // Handle any internal server errors
         return res.status(500).json({ status: 'failed', message: 'Internal server error', error: error.message });
     }
-};
+}
 
 
+const getQrByCollecctor = async (req, res) => {
+
+    try {
+
+        if (!req.user.isAdmin) {
+            return res.status(401).json({ status: 'failed', message: 'You are not authorized to perform this action' });
+        }
+
+        const getUserId = req.user.userId
+        const getCollector = await UserModel.findById(getUserId);
+
+        if (!getCollector) {
+            return res.status(404).json({ status: 'failed', message: 'Collector not found' });
+        }
+
+        const collectorName = getCollector.Name;
+
+        const getQR = await QRmodel.find({ collector: collectorName });
+
+        if(!getQR){
+            return res.status(404).json({ status: 'failed', message: 'QR code not found' });
+        }
+
+        return res.status(200).json({ status: 'success', message: 'QR code retrieved successfully', data: getQR });
+
+    }catch (error) {
+        return res.status(500).json({ status: 'failed', message: 'Internal server error', error: error.message });
+    }
+
+}
 
 const updateQR = async (req, res) => {
     try {
@@ -120,10 +149,20 @@ const updateQR = async (req, res) => {
     }
 }
 
-
-
 const deleteQR = async (req, res) => {
     try {
+
+        if (!req.user.isAdmin) {
+            return res.status(401).json({ status: 'failed', message: 'You are not authorized to perform this action' });
+        }
+
+        const deleteQR = await QRmodel.findByIdAndDelete(req.params.id);
+
+        if (!deleteQR) {
+            return res.status(404).json({ status: 'failed', message: 'QR code not found' });
+        }
+
+        res.status(200).json({ status: 'success', message: 'QR code deleted successfully' });
 
     } catch (error) {
 
@@ -137,5 +176,6 @@ module.exports = {
     getQR,
     updateQR,
     deleteQR,
-    getQRByType
+    getQRByType,
+    getQrByCollecctor
 }
